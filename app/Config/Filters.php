@@ -40,6 +40,8 @@ class Filters extends BaseConfig
         ],
     ];
 
+  
+
     /**
      * List of filter aliases that works on a
      * particular HTTP method (GET, POST, etc.).
@@ -51,7 +53,9 @@ class Filters extends BaseConfig
      * permits any HTTP method to access a controller. Accessing the controller
      * with a method you don’t expect could bypass the filter.
      */
-    public array $methods = [];
+    public $methods = [
+        'post' => ['csrf'],
+    ];
 
     /**
      * List of filter aliases that should run on any

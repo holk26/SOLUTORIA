@@ -1,5 +1,9 @@
 # CodeIgniter 4 Application Starter
 
+## Para iniciar el servidor local
+
+En consola: `php spark serve`
+
 ## What is CodeIgniter?
 
 CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
