@@ -29,7 +29,13 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+use App\Controllers\Home;
+
 $routes->get('/', 'Home::index');
+$routes->get('edite/(:segment)', [Home::class, 'view']);
+$routes->post('Home/btnUpdate', 'Home::btnUpdate');
+$routes->post('Home/viewLotes', 'Home::viewLotes');
+$routes->get('Home/view/(:segment)', [Home::class, 'viewGrafico']);
 
 /*
  * --------------------------------------------------------------------
