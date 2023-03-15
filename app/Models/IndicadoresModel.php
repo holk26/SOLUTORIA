@@ -60,6 +60,8 @@ class IndicadoresModel extends Model
         if ($response !== false) {
             $data = json_decode($response, true);
             //var_dump($data);
+            $lote33 = microtime(true);
+            //echo "LOTE ".$lote33;
             foreach ($data as $key => $value) {
                 $insertData = [
                     'codigo' => $value['codigoIndicador'],
@@ -67,7 +69,7 @@ class IndicadoresModel extends Model
                     'unidad_medida' => $value['unidadMedidaIndicador'],
                     'fecha' => $value['fechaIndicador'],
                     'valor' => $value['valorIndicador'],
-                    'lote' => date('YmdHisu')
+                    'lote' => $lote33
                 ];
                 $this->insert($insertData);
             }

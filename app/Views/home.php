@@ -10,6 +10,11 @@
             </div>
           </li>
           <hr>
+          <div id="spinner" class="justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
           <div id="lotes"></div>
         </ul>
       </div>
@@ -24,6 +29,7 @@
 </div>
 <script>
   refrecarLotes();
+
   function refrecarLotes() {
     $.ajax({
       url: '/Home/viewLotes/',
@@ -33,8 +39,8 @@
         // Actualizar la página o eliminar el elemento de la lista
       }
     });
-
-
+    $("#spinner").hide();
+    $("#btn_update").attr('disabled', false);
   }
 
 
@@ -54,12 +60,13 @@
   //Aptualiza los datos desde la api
   $(document).ready(function() {
     $("#btn_update").click(function() {
+      $("#spinner").show();
+      $("#btn_update").attr('disabled', true);
       $.post('<?php echo base_url('Home/btnUpdate'); ?>', function(data) {
         console.log(data);
         refrecarLotes();
-        //$('#indicadores').html(data);
-
       });
     });
+    
   });
 </script>

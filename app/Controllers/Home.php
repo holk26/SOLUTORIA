@@ -37,7 +37,7 @@ class Home extends BaseController
 
     public function viewLotes(){
         $model = model(IndicadoresModel::class);
-        echo date('YmdHisu');
+        //echo date('YmdHisu');
         $data['indicadores'] = $model->getIndicadores();
 
         echo view('parcial_indicadores',$data); 
