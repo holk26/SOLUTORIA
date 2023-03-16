@@ -30,7 +30,7 @@
     <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header">
         <img src="..." class="rounded me-2" alt="...">
-        <strong class="me-auto">Bootstrap</strong>
+        <strong class="me-auto">SOLUTORIA</strong>
         <small>11 mins ago</small>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
@@ -40,7 +40,29 @@
     </div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+  window.addEventListener('hashchange', function() {
+    const hash = window.location.hash;
+    const numero = hash.substring(1);
+    console.log('El hash ha cambiado. El nuevo número es: ' + numero);
+    viewGrafica(numero);
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.hash) {
+      const hash = window.location.hash;
+      const numero = hash.substring(1);
+      console.log('Hay un hash en la URL. El número es: ' + numero);
+      viewGrafica(numero);
+      // Ejecutar función de validación
+    }
+  });
+  let dataX = [];
+  let dates = [];
+  let values = [];
+  let ctx = [];
+  let chart = [];
   refrecarLotes();
 
   function refrecarLotes() {
@@ -67,8 +89,16 @@
         $('#indicadores').html(response);
         // Actualizar la página o eliminar el elemento de la lista
       }
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      $('#indicadores').html("<h4>Indicador no encontrado</h4>");
+      console.log('Error en la petición AJAX:');
+      console.log('jqXHR:', jqXHR);
+      console.log('textStatus:', textStatus);
+      console.log('errorThrown:', errorThrown);
+      // Mostrar un mensaje de error al usuario o realizar otra acción apropiada
     });
   }
+
 
   //Aptualiza los datos desde la api
   $(document).ready(function() {

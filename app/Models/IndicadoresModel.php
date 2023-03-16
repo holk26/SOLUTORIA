@@ -16,7 +16,7 @@ class IndicadoresModel extends Model
 
     public function getData($lote)
     {
-        return $this->where(['lote' => $lote])->orderBy('id', 'ASC')->findAll();
+        return $this->where(['lote' => $lote])->limit(6)->orderBy('id', 'ASC')->findAll();
     }
 
     public function updateApi()

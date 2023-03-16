@@ -1,10 +1,13 @@
 <?php
 //var_dump($dataI);
 ?>
+
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
 <div class="container">
     <h2>Modo edicion</h2>
     <div class="mb-3"></div>
-    <table class="table table-striped table-hover">
+    <table id="myTable" class="display" style="width:100%">
         <thead>
             <tr>
                 <th>Código</th>
@@ -34,12 +37,20 @@
 
     </main>
     <script>
-        function editeIndicadorById(id){
-            alert("Vas a editar: "+id);
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+
+        let table = new DataTable('#myTable', {
+            responsive: true
+        });
+
+        function editeIndicadorById(id) {
+            alert("Vas a editar: " + id);
         }
 
-        function eliminarIndicadorById(id){
-            alert("Vas a eliminar: "+id);
+        function eliminarIndicadorById(id) {
+            alert("Vas a eliminar: " + id);
         }
     </script>
 </div>
