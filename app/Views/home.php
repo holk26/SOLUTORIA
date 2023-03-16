@@ -26,6 +26,19 @@
       </div>
     </main>
   </div>
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <img src="..." class="rounded me-2" alt="...">
+        <strong class="me-auto">Bootstrap</strong>
+        <small>11 mins ago</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        OK
+      </div>
+    </div>
+  </div>
 </div>
 <script>
   refrecarLotes();
@@ -63,10 +76,28 @@
       $("#spinner").show();
       $("#btn_update").attr('disabled', true);
       $.post('<?php echo base_url('Home/btnUpdate'); ?>', function(data) {
-        console.log(data);
-        refrecarLotes();
-      });
+          console.log(data);
+          mostrarMensaje("Actualizacion completa.");
+          refrecarLotes();
+        })
+        .fail(function(xhr, status, error) {
+          mostrarMensaje(status);
+          console.log("Error al enviar la solicitud: " + status);
+          $("#btn_update").attr('disabled', false);
+          $("#spinner").hide();
+        });
+
     });
-    
   });
+
+  function mostrarMensaje(mensaje) {
+    // Obtener el elemento con la clase "toast-body"
+    const toastBody = $('.toast-body');
+
+    // Actualizar el contenido del elemento con el mensaje recibido como argumento
+    toastBody.text(mensaje);
+
+    // Mostrar el elemento toast
+    $('#liveToast').toast('show');
+  }
 </script>
