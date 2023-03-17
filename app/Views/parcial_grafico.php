@@ -19,7 +19,7 @@
 </div>
 <div class="mb-3"></div>
 <h1>Gráficos <?php echo $dataI[0]['lote']; ?></h1>
-<canvas id="miGrafica"></canvas>
+<div id="miGrafica"></div>
 
 </main>
 </div>
@@ -29,71 +29,51 @@
 
 </div>
 
+
 <script>
   var datos_grafica = <?php echo json_encode($dataI); ?>;
-
   console.log(datos_grafica);
+  //Codigo de la grafica
 
-  // Suponiendo que tienes el arreglo de objetos en una variable llamada "datos"
+  // Creamos un objeto para guardar los datos por serie
+  var seriesData = {};
 
-  // Crear objeto para almacenar los datos transformados
-  var datosTransformados = {
-    fechas: [],
-    nombres: {}
-  };
-
-  // Recorrer el arreglo de objetos y agregar cada valor al objeto transformado
-  datos_grafica.forEach(dato => {
-    // Agregar fecha al arreglo de fechas si no existe
-    if (!datosTransformados.fechas.includes(dato.fecha)) {
-      datosTransformados.fechas.push(dato.fecha);
+  // Iteramos por cada objeto en el arreglo 'datos'
+  datos_grafica.forEach(function(dato) {
+    // Si la serie no existe, la creamos
+    if (!seriesData[dato.nombre]) {
+      seriesData[dato.nombre] = {
+        name: dato.nombre,
+        data: []
+      };
     }
-
-    // Agregar valor al objeto correspondiente al nombre y fecha
-    if (!datosTransformados.nombres[dato.nombre]) {
-      datosTransformados.nombres[dato.nombre] = {};
-    }
-    datosTransformados.nombres[dato.nombre][dato.fecha] = dato.valor;
+    // Agregamos el valor a la serie correspondiente
+    seriesData[dato.nombre].data.push(parseFloat(dato.valor));
   });
 
-  // Crear arreglo de datasets para Chart.js a partir del objeto transformado
-  var datasets = Object.entries(datosTransformados.nombres).map(([nombre, valores]) => {
-    return {
-      label: nombre,
-      data: datosTransformados.fechas.map(fecha => valores[fecha] || null),
-      fill: false
-    };
-  });
+  // Convertimos el objeto de series a un arreglo
+  var series = Object.values(seriesData);
 
-  // Crear objeto de configuración de Chart.js
-  var config = {
-    type: 'line',
-    data: {
-      labels: datosTransformados.fechas,
-      datasets: datasets
+  // Configuramos el gráfico
+  var options = {
+    chart: {
+      type: 'line'
     },
-    options: {
-      scales: {
-        xAxes: [{
-          type: 'time',
-          time: {
-            unit: 'day',
-            displayFormats: {
-              day: 'MMM DD'
-            }
-          }
-        }]
-      }
+    series: series,
+    xaxis: {
+      categories: datos_grafica.map(function(dato) {
+        return dato.fecha;
+      })
     }
   };
 
-  // Obtener el contexto del canvas donde se mostrará la gráfica
-  var ctx2 = document.getElementById('miGrafica').getContext('2d');
+  // Creamos el gráfico
+  var chart = new ApexCharts(document.querySelector("#miGrafica"), options);
 
-  // Crear instancia de Chart.js con la configuración y contexto
-  var grafica = new Chart(ctx2, config);
+  // Renderizamos el gráfico
+  chart.render();
 
-
+  //Fin codigo de la grafica
   $('#btn_delete_lote').on('click', function() {
     const lote = $(this).data('lote');
     const confirmacion = confirm('¿Seguro que desea eliminar el lote ' + lote + '?');

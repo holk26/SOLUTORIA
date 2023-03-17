@@ -58,11 +58,6 @@
       // Ejecutar función de validación
     }
   });
-  let dataX = [];
-  let dates = [];
-  let values = [];
-  let ctx = [];
-  let chart = [];
   refrecarLotes();
 
   function refrecarLotes() {
