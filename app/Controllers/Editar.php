@@ -41,4 +41,6 @@ class Editar extends BaseController
 
         return 'Eliminacion completa '.$id;
     }
+
+    
 }

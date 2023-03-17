@@ -20,6 +20,19 @@ class Home extends BaseController
             . view('templates/footer');
     }
 
+    public function deleteLote()
+    {
+        $lote = $this->request->getPost('lote');
+        $model = model(IndicadoresModel::class);
+        
+        $model ->where('lote', $lote)->delete();
+
+        $data['indicadores'] = $model->getIndicadores();
+
+        echo "hola ".$lote;
+
+    }
+
     //View editar indicadores
     public function view($loteI = false)
     {
