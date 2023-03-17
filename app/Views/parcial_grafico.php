@@ -1,7 +1,7 @@
 <?php
 //var_dump($dataI);
-$miArrayJSON = json_encode($dataI);
-echo "<script>var dataGrafico = JSON.parse('$miArrayJSON');</script>";
+//$miArrayJSON = json_encode($dataI);
+//echo "<script>var dataGrafico = JSON.parse('$miArrayJSON');</script>";
 ?>
 <div class="row">
     <div class="col-md-4 ms-auto">
@@ -30,18 +30,20 @@ echo "<script>var dataGrafico = JSON.parse('$miArrayJSON');</script>";
 </div>
 
 <script>
-console.log(dataGrafico);
+var datos_grafica = <?php echo json_encode($dataI); ?>;
+
+console.log(datos_grafica);
 
 // Suponiendo que tienes el arreglo de objetos en una variable llamada "datos"
 
 // Crear objeto para almacenar los datos transformados
-let datosTransformados = {
+var datosTransformados = {
   fechas: [],
   nombres: {}
 };
 
 // Recorrer el arreglo de objetos y agregar cada valor al objeto transformado
-dataGrafico.forEach(dato => {
+datos_grafica.forEach(dato => {
   // Agregar fecha al arreglo de fechas si no existe
   if (!datosTransformados.fechas.includes(dato.fecha)) {
     datosTransformados.fechas.push(dato.fecha);
@@ -55,7 +57,7 @@ dataGrafico.forEach(dato => {
 });
 
 // Crear arreglo de datasets para Chart.js a partir del objeto transformado
-let datasets = Object.entries(datosTransformados.nombres).map(([nombre, valores]) => {
+var datasets = Object.entries(datosTransformados.nombres).map(([nombre, valores]) => {
   return {
     label: nombre,
     data: datosTransformados.fechas.map(fecha => valores[fecha] || null),
@@ -64,7 +66,7 @@ let datasets = Object.entries(datosTransformados.nombres).map(([nombre, valores]
 });
 
 // Crear objeto de configuración de Chart.js
-let config = {
+var config = {
   type: 'line',
   data: {
     labels: datosTransformados.fechas,
@@ -86,10 +88,10 @@ let config = {
 };
 
 // Obtener el contexto del canvas donde se mostrará la gráfica
-let ctx2 = document.getElementById('miGrafica').getContext('2d');
+var ctx2 = document.getElementById('miGrafica').getContext('2d');
 
 // Crear instancia de Chart.js con la configuración y contexto
-let grafica = new Chart(ctx2, config);
+var grafica = new Chart(ctx2, config);
 
 
 

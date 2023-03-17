@@ -52,7 +52,7 @@ class Home extends BaseController
         if ($data2){
             echo "OK";
         }else{
-            echo "error k";
+            echo "error";
         }
     }
 
