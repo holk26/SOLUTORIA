@@ -40,27 +40,29 @@
         </tbody>
     </table>
     </main>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="..." class="rounded me-2" alt="...">
+                <strong class="me-auto">SOLUTORIA</strong>
+                <small>11 mins ago</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                OK
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Obtener todos los botones "Editar" y agregar un controlador de eventos de clic
         const btnsEditar = document.querySelectorAll('.btn-editar');
         btnsEditar.forEach(btn => {
+            let editando = false;
             btn.addEventListener('click', () => {
                 const fila = btn.closest('tr');
                 const inputsEditables = fila.querySelectorAll('.editable');
 
-                // Cambiar el botón "Editar" a "Actualizar"
-                btn.innerText = 'Actualizar';
-                btn.classList.replace('btn-primary', 'btn-success');
-
-                // Hacer que las celdas editables sean editables
-                inputsEditables.forEach(input => {
-                    input.contentEditable = true;
-                    input.classList.add('bg-light');
-                });
-
-                // Agregar un controlador de eventos de clic al botón "Actualizar"
-                btn.addEventListener('click', () => {
+                if (editando) {
                     // Obtener los datos de la fila
                     const id = fila.querySelector('td:first-child').innerText;
                     const codigo = fila.querySelector('.editable:nth-child(2)').innerText;
@@ -70,7 +72,7 @@
                     const valor = fila.querySelector('.editable:nth-child(6)').innerText;
 
                     // Enviar una solicitud POST Ajax con los datos de la fila
-                    const url = '/editar/editaFila';
+                    const url = '<?php echo base_url('Editar/create'); ?>';
                     const data = {
                         id,
                         codigo,
@@ -79,16 +81,12 @@
                         fecha,
                         valor
                     };
-                    fetch(url, {
-                            method: 'POST',
-                            body: JSON.stringify(data),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
+                    $.post(url, data, function(data) {
+                            mostrarMensaje("Actualizacion completa.");
                         })
-                        .then(response => response.json())
-                        .then(data => console.log(data))
-                        .catch(error => console.error(error));
+                        .fail(function(xhr, status, error) {
+                            mostrarMensaje("Error al enviar la solicitud: " + status);
+                        });
 
                     // Cambiar el botón "Actualizar" a "Editar"
                     btn.innerText = 'Editar';
@@ -99,35 +97,50 @@
                         input.contentEditable = false;
                         input.classList.remove('bg-light');
                     });
-                });
+                } else {
+                    // Cambiar el botón "Editar" a "Actualizar"
+                    btn.innerText = 'Actualizar';
+                    btn.classList.replace('btn-primary', 'btn-success');
+
+                    // Hacer que las celdas editables sean editables
+                    inputsEditables.forEach(input => {
+                        input.contentEditable = true;
+                        input.classList.add('bg-light');
+                    });
+                }
+
+                editando = !editando;
             });
         });
+
 
         // Obtener todos los botones "Eliminar" y agregar un controlador de eventos de clic
         const btnsEliminar = document.querySelectorAll('.btn-eliminar');
         btnsEliminar.forEach(btn => {
             btn.addEventListener('click', () => {
                 const fila = btn.closest('tr');
+                const id = fila.querySelector('td:first-child').innerText;
 
-                // Eliminar la fila
-                fila.remove();
+                // Enviar una solicitud POST Ajax con el ID de la fila
+                const url = '<?php echo base_url('Editar/delete'); ?>';
+                const data = {
+                    id
+                };
+                $.post(url, data, function(data) {
+                        console.log(data);
+                        mostrarMensaje("Eliminación completa.");
+                        // Eliminar la fila
+                        fila.remove();
+                    })
+                    .fail(function(xhr, status, error) {
+                        console.log("Error al enviar la solicitud: " + status);
+                    });
+
+
             });
         });
-        /*
-        $(document).ready(function() {
-            $('.btn-editar').on('click', function() {
-                var fila_id = $(this).data('id');
-                var fila = $('#fila-' + fila_id);
 
-                fila.find('.editable').each(function() {
-                    var contenido = $(this).html();
-                    $(this).html('<input type="text" class="form-control" value="' + contenido + '">');
-                });
 
-                $(this).text('Actualizar');
-            });
-        });
-        */
         let table = new DataTable('#myTable', {
             responsive: true
         });
@@ -138,6 +151,17 @@
 
         function eliminarIndicadorById(id) {
             alert("Vas a eliminar: " + id);
+        }
+
+        function mostrarMensaje(mensaje) {
+            // Obtener el elemento con la clase "toast-body"
+            const toastBody = $('.toast-body');
+
+            // Actualizar el contenido del elemento con el mensaje recibido como argumento
+            toastBody.text(mensaje);
+
+            // Mostrar el elemento toast
+            $('#liveToast').toast('show');
         }
     </script>
 </div>

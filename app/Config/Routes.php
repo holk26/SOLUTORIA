@@ -36,8 +36,10 @@ $routes->get('/', 'Home::index');
 $routes->get('edite/(:segment)', [Home::class, 'view']);
 $routes->post('Home/btnUpdate', 'Home::btnUpdate');
 $routes->post('Home/viewLotes', 'Home::viewLotes');
-$routes->post('editar/editaFila', [Editar::class, 'editarFila']);
+$routes->post('Editar/create', 'Editar::editaFila');
+$routes->post('Editar/delete', 'Editar::deleteFila');
 $routes->get('Home/view/(:segment)', [Home::class, 'viewGrafico']);
+$routes->post('editar/editaFila', 'Editar::editaFila');
 
 /*
  * --------------------------------------------------------------------
