@@ -1,13 +1,17 @@
-<?php $contador = 1; ?>
-<?php foreach ($indicadores as $indicador) : ?>
-    <a href="#<?php echo $indicador['lote']; ?>">
-        <div class="card">
-            <div class="card-body">
-                <span data-feather="file"><?php echo $contador; ?> indicador:</span>
-                <?php echo date('d/m/Y H:i:s', $indicador['lote']); ?>
+<?php if(count($indicadores) > 0) : ?>
+    <?php $contador = 1; ?>
+    <?php foreach ($indicadores as $indicador) : ?>
+        <a href="#<?php echo $indicador['lote']; ?>">
+            <div class="card">
+                <div class="card-body">
+                    <span data-feather="file"><?php echo $contador; ?> indicador:</span>
+                    <?php echo date('d/m/Y H:i:s', $indicador['lote']); ?>
+                </div>
             </div>
-        </div>
-    </a>
-    <br>
-    <?php $contador++; ?>
-<?php endforeach; ?>
+        </a>
+        <br>
+        <?php $contador++; ?>
+    <?php endforeach; ?>
+<?php else : ?>
+    <p>Sin indicadores, Oprime el boton actualizar</p>
+<?php endif; ?>
