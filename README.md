@@ -1,10 +1,16 @@
 # 1.  Iniciar el proyecto
 
+clonar el proyecto 
+
+Validar requisitos de CodeIgniter
+
 # Configura la base de datos
+
+La base de datos puede ser en Xampp
 
 importa el archivo `datos_financieros.sql en mysql`
 
-edite el archivo `env a .env`
+Edite el archivo `env a .env`
 
 Edite de acuerdo a sus requerimiento
 
@@ -14,7 +20,9 @@ database.default.username = root<br>
 database.default.password = ''<br>
 database.default.DBDriver = MySQLi<br>
 
-ejecuta `php spark serve`
+# Ejecutar el servidor 
+
+En la terminal ejecutar `php spark serve`
 
 `http://localhost:8080/'`
 
