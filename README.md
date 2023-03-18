@@ -21,6 +21,8 @@ ejecuta `php spark serve`
 
 ![image](https://user-images.githubusercontent.com/23020718/226075685-a105e97d-02f8-4766-9bf3-7d733c15550a.png)
 
+![image](https://user-images.githubusercontent.com/23020718/226115635-7d364868-3856-4329-92d5-7e9224b2a943.png)
+
 ![image](https://user-images.githubusercontent.com/23020718/226075761-f2c46291-5a6d-4316-8d4b-47882d6fbb09.png)
 
 ![image](https://user-images.githubusercontent.com/23020718/226075779-28935b0b-8009-451e-8d3e-83d77aa42e99.png)
