@@ -6,9 +6,17 @@ Validar requisitos de CodeIgniter
 
 # Configura la base de datos
 
+![image](https://user-images.githubusercontent.com/23020718/226126514-8a831a41-7618-41e2-8847-eccc7a4083bf.png)
+
 La base de datos puede ser en Xampp
 
 importa el archivo `datos_financieros.sql en mysql`
+
+![image](https://user-images.githubusercontent.com/23020718/226126640-0abf2e6a-76fb-4864-a158-96127c939ad0.png)
+
+![image](https://user-images.githubusercontent.com/23020718/226126655-1b35abe7-3435-43bc-a6a0-fd4577ec8d7a.png)
+
+![image](https://user-images.githubusercontent.com/23020718/226126574-c164d7c3-fb7a-47c1-8da1-8be3ff2d6205.png)
 
 Edite el archivo `env a .env`
 
