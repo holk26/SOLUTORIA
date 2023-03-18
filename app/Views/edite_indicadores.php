@@ -121,24 +121,28 @@
                 const fila = btn.closest('tr');
                 const id = fila.querySelector('td:first-child').innerText;
 
-                // Enviar una solicitud POST Ajax con el ID de la fila
-                const url = '<?php echo base_url('Editar/delete'); ?>';
-                const data = {
-                    id
-                };
-                $.post(url, data, function(data) {
-                        console.log(data);
-                        mostrarMensaje("Eliminación completa.");
-                        // Eliminar la fila
-                        fila.remove();
-                    })
-                    .fail(function(xhr, status, error) {
-                        console.log("Error al enviar la solicitud: " + status);
-                    });
+                // Preguntar al usuario si está seguro de eliminar
+                const confirmacion = confirm("¿Estás seguro de que quieres eliminar este registro?");
 
-
+                if (confirmacion) {
+                    // Enviar una solicitud POST Ajax con el ID de la fila
+                    const url = '<?php echo base_url('Editar/delete'); ?>';
+                    const data = {
+                        id
+                    };
+                    $.post(url, data, function(data) {
+                            console.log(data);
+                            mostrarMensaje("Eliminación completa.");
+                            // Eliminar la fila
+                            fila.remove();
+                        })
+                        .fail(function(xhr, status, error) {
+                            console.log("Error al enviar la solicitud: " + status);
+                        });
+                }
             });
         });
+
 
 
         let table = new DataTable('#myTable', {

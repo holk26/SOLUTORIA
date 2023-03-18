@@ -10,7 +10,7 @@
         <h4 class="text mb-3">Contacto</h4>
         <ul class="list-unstyled">
           <li><a href="#" class="text-muted"><i class="bi bi-geo-alt"></i> Ciudad, Bogota</a></li>
-          <li><a href="#" class="text-muted"><i class="bi bi-phone"></i> +57 3102796853</a></li>
+          <li><a href="https://wa.me/573102796853" target="_black" class="text-muted"><i class="bi bi-phone"></i> +57 3102796853</a></li>
           <li><a href="#" class="text-muted"><i class="bi bi-envelope"></i> homero9726@gmail.com</a></li>
         </ul>
       </div>

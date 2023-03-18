@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row">
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar overflow-auto">
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
@@ -22,7 +22,27 @@
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <h1 class="mt-5">Indicadores</h1>
       <div id="indicadores">
-        <h4>Selecciona un indicador</h4>
+        <p>Selecciona un indicador de la columna izquierda para visualizar la grafica y demas opciones</p>
+        <p>
+          <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Instrucciones
+          </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            <h5>Modo de uso:</h5>
+            <ul class="list-group">
+              <li class="list-group-item">En el botón <button type="button" class="btn btn-outline-success btn-sm">Actualizar</button> genera un token y descarga los indicadores y los guarda en la base de datos MySQL. 
+              y los lista en la columna izquierda</li>
+              <li class="list-group-item">En el botón <button type="button" class="btn btn-outline-success btn-sm">Editar</button>  se pueden borrar y modificar los registros por id.</li>
+              <li class="list-group-item">En el botón <button type="button" class="btn btn-outline-danger btn-sm">Eliminar</button>  eliminarás por completo el lote en el que estés con todos sus registros.</li>
+              <li class="list-group-item">
+                  En la vista de la grafica tenemos varias opciones filtrar por fechas deseleccionar indicadores para analizar de forma independiente, hacer zoom, descargar csv, png, svg
+              </li>
+            </ul>
+
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -97,25 +117,25 @@
 
   //Actualiza los datos desde la api
   $(document).ready(function() {
-  $("#btn_update").click(function() {
-    $("#spinner").show();
-    $("#btn_update").attr('disabled', true);
-    const start = performance.now(); // tiempo actual antes de enviar la solicitud
-    $.post('<?php echo base_url('Home/btnUpdate'); ?>', function(data) {
-        const duration = performance.now() - start / 1000; // calcular el tiempo de solicitud
-        console.log(data);
-        mostrarMensaje("Actualización completa",duration.toFixed(2));
-        refrecarLotes();
-      })
-      .fail(function(xhr, status, error) {
-        mostrarMensaje(status);
-        console.log("Error al enviar la solicitud: " + status);
-        $("#btn_update").attr('disabled', false);
-        $("#spinner").hide();
-      });
+    $("#btn_update").click(function() {
+      $("#spinner").show();
+      $("#btn_update").attr('disabled', true);
+      const start = performance.now(); // tiempo actual antes de enviar la solicitud
+      $.post('<?php echo base_url('Home/btnUpdate'); ?>', function(data) {
+          const duration = performance.now() - start / 1000; // calcular el tiempo de solicitud
+          console.log(data);
+          mostrarMensaje("Actualización completa", duration.toFixed(2));
+          refrecarLotes();
+        })
+        .fail(function(xhr, status, error) {
+          mostrarMensaje(status);
+          console.log("Error al enviar la solicitud: " + status);
+          $("#btn_update").attr('disabled', false);
+          $("#spinner").hide();
+        });
 
+    });
   });
-});
 
   function mostrarMensaje(mensaje, timeA = 5) {
     // Obtener el elemento con la clase "toast-body"
@@ -124,7 +144,7 @@
 
     // Actualizar el contenido del elemento con el mensaje recibido como argumento
     toastBody.text(mensaje);
-    time.text("Tardo "+ timeA + " segundos");
+    time.text("Tardo " + timeA + " segundos");
 
     // Mostrar el elemento toast
     $('#liveToast').toast('show');
