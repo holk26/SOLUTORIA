@@ -33,80 +33,87 @@ Hasta: <input type="date" id="fechaHasta">
 <script>
   var datos_grafica = <?php echo json_encode($dataI); ?>;
 
-  // Crea una función para filtrar los datos de la gráfica
+  // Obtén la fecha mínima y máxima de los datos
+  var fechas = datos_grafica.map(function(dato) {
+    return new Date(dato.fecha).getTime();
+  });
+  var fechaMinima = new Date(Math.min.apply(null, fechas)).toISOString().slice(0, 10);
+  var fechaMaxima = new Date(Math.max.apply(null, fechas)).toISOString().slice(0, 10);
+
+  // Completa automáticamente los input de fecha
+  document.getElementById("fechaDesde").value = fechaMinima;
+  document.getElementById("fechaHasta").value = fechaMaxima;
+
+
+  // Obtén los valores únicos de las categorías (fechas)
+  var categorias = datos_grafica.map(function(dato) {
+    return dato.fecha;
+  });
+  categorias = categorias.filter(function(valor, indice, self) {
+    return self.indexOf(valor) === indice;
+  });
+  categorias.sort(); // Ordena las categorías de forma ascendente
+
+  // Crea un objeto con las series de la gráfica
+  var series = {};
+  datos_grafica.forEach(function(dato) {
+    if (!series[dato.nombre]) {
+      series[dato.nombre] = {
+        name: dato.nombre,
+        data: []
+      };
+    }
+    series[dato.nombre].data.push(parseFloat(dato.valor));
+  });
+
+  // Crea la gráfica con ApexCharts
+  var options = {
+    chart: {
+      type: 'line',
+      height: 350
+    },
+    series: Object.values(series),
+    xaxis: {
+      categories: categorias
+    }
+  };
+  var chart = new ApexCharts(document.querySelector("#miGrafica"), options);
+  chart.render();
+
+  // Define la función para filtrar los datos por fecha
   function filtrarDatos() {
-    // Obtén las fechas desde y hasta del filtro
     var fechaDesde = document.getElementById("fechaDesde").value;
     var fechaHasta = document.getElementById("fechaHasta").value;
-
-    // Filtra los datos según las fechas seleccionadas
     var datosFiltrados = datos_grafica.filter(function(dato) {
       return dato.fecha >= fechaDesde && dato.fecha <= fechaHasta;
     });
-
-    console.log(datosFiltrados);
-    // Actualiza los datos de la gráfica con los datos filtrados
-    actualizarGrafica(datosFiltrados);
-  }
-
-  // Crea una función para actualizar la gráfica con los datos filtrados
-  function actualizarGrafica(datosFiltrados) {
-    // Crea un arreglo vacío para las categorías de la gráfica
-    var categorias = [];
-
-    // Crea un objeto para almacenar los valores de cada serie
-    var valores = {};
-
-    // Recorre los datos filtrados y agrega las categorías y valores correspondientes
-    datosFiltrados.forEach(function(dato) {
-      categorias.push(dato.fecha);
-
-      if (!valores[dato.nombre]) {
-        valores[dato.nombre] = [];
-      }
-      valores[dato.nombre].push(dato.valor);
+    // Actualiza las categorías y las series con los datos filtrados
+    categorias = datosFiltrados.map(function(dato) {
+      return dato.fecha;
     });
-
-    // Convierte el objeto de valores en un arreglo de series
-    var series = [];
-    for (var nombre in valores) {
-      if (valores.hasOwnProperty(nombre)) {
-        series.push({
-          name: nombre,
-          data: valores[nombre]
-        });
+    categorias = categorias.filter(function(valor, indice, self) {
+      return self.indexOf(valor) === indice;
+    });
+    categorias.sort(); // Ordena las categorías de forma ascendente
+    series = {};
+    datosFiltrados.forEach(function(dato) {
+      if (!series[dato.nombre]) {
+        series[dato.nombre] = {
+          name: dato.nombre,
+          data: []
+        };
       }
-    }
-
-    // Configura las opciones de la gráfica
-    var options = {
-      series: series,
-      chart: {
-        type: 'line',
-        height: 350
-      },
+      series[dato.nombre].data.push(parseFloat(dato.valor));
+    });
+    // Actualiza la gráfica con los datos filtrados
+    chart.updateSeries(Object.values(series));
+    chart.updateOptions({
       xaxis: {
-        categories: categorias,
-      },
-      yaxis: {
-        title: {
-          text: 'Valor'
-        }
-      },
-      stroke: {
-        curve: 'smooth'
+        categories: categorias
       }
-    };
-
-    // Crea la instancia de la gráfica con los datos filtrados y las nuevas opciones
-    var chart = new ApexCharts(document.querySelector("#miGrafica"), options);
-
-    // Renderiza la gráfica
-    chart.render();
+    });
   }
 
-  // Carga la gráfica con todos los datos al cargar la página
-  actualizarGrafica(datos_grafica);
 
 
   //Fin codigo de la grafica
