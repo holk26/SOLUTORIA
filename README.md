@@ -4,15 +4,17 @@
 
 importa el archivo `datos_financieros.sql en mysql`
 
-`database.default.hostname = localhost`
-`database.default.database = datos_financieros`
-`database.default.username = root`
-`database.default.password = ''`
-`database.default.DBDriver = MySQLi`
-
 edite el archivo `env a .env`
 
+database.default.hostname = localhost
+atabase.default.database = datos_financieros
+database.default.username = root
+database.default.password = ''
+database.default.DBDriver = MySQLi
+
 ejecuta `php spark serve`
+
+`http://localhost:8080/'`
 
 ## What is CodeIgniter?
 
