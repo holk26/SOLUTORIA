@@ -1,6 +1,6 @@
-# Iniciar el proyecto
+# 1.  Iniciar el proyecto
 
-# 1. Configura la base de datos
+# Configura la base de datos
 
 importa el archivo `datos_financieros.sql en mysql`
 
@@ -15,6 +15,18 @@ database.default.DBDriver = MySQLi<br>
 ejecuta `php spark serve`
 
 `http://localhost:8080/'`
+
+![image](https://user-images.githubusercontent.com/23020718/226075685-a105e97d-02f8-4766-9bf3-7d733c15550a.png)
+
+![image](https://user-images.githubusercontent.com/23020718/226075761-f2c46291-5a6d-4316-8d4b-47882d6fbb09.png)
+
+![image](https://user-images.githubusercontent.com/23020718/226075779-28935b0b-8009-451e-8d3e-83d77aa42e99.png)
+
+![image](https://user-images.githubusercontent.com/23020718/226075793-219bea06-746c-4422-97ef-b1639adb5a90.png)
+
+![image](https://user-images.githubusercontent.com/23020718/226075839-58b0f475-a2b1-40c4-bac8-7c58c06d6a6f.png)
+
+
 
 ## What is CodeIgniter?
 
