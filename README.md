@@ -6,11 +6,11 @@ importa el archivo `datos_financieros.sql en mysql`
 
 edite el archivo `env a .env`
 
-database.default.hostname = localhost
-atabase.default.database = datos_financieros
-database.default.username = root
-database.default.password = ''
-database.default.DBDriver = MySQLi
+database.default.hostname = localhost <br>
+atabase.default.database = datos_financieros<br>
+database.default.username = root<br>
+database.default.password = ''<br>
+database.default.DBDriver = MySQLi<br>
 
 ejecuta `php spark serve`
 
