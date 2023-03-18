@@ -1,4 +1,18 @@
-# CodeIgniter 4 Application Starter
+# Iniciar el proyecto
+
+# 1. Configura la base de datos
+
+importa el archivo `datos_financieros.sql en mysql`
+
+`database.default.hostname = localhost`
+`database.default.database = datos_financieros`
+`database.default.username = root`
+`database.default.password = ''`
+`database.default.DBDriver = MySQLi`
+
+edite el archivo `env a .env`
+
+ejecuta `php spark serve`
 
 ## What is CodeIgniter?
 
