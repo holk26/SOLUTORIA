@@ -31,7 +31,7 @@
       <div class="toast-header">
         <img src="..." class="rounded me-2" alt="...">
         <strong class="me-auto">SOLUTORIA</strong>
-        <small>11 mins ago</small>
+        <small id="timeApi">11 mins ago</small>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
       <div class="toast-body">
@@ -95,32 +95,36 @@
   }
 
 
-  //Aptualiza los datos desde la api
+  //Actualiza los datos desde la api
   $(document).ready(function() {
-    $("#btn_update").click(function() {
-      $("#spinner").show();
-      $("#btn_update").attr('disabled', true);
-      $.post('<?php echo base_url('Home/btnUpdate'); ?>', function(data) {
-          console.log(data);
-          mostrarMensaje("Actualizacion completa.");
-          refrecarLotes();
-        })
-        .fail(function(xhr, status, error) {
-          mostrarMensaje(status);
-          console.log("Error al enviar la solicitud: " + status);
-          $("#btn_update").attr('disabled', false);
-          $("#spinner").hide();
-        });
+  $("#btn_update").click(function() {
+    $("#spinner").show();
+    $("#btn_update").attr('disabled', true);
+    const start = performance.now(); // tiempo actual antes de enviar la solicitud
+    $.post('<?php echo base_url('Home/btnUpdate'); ?>', function(data) {
+        const duration = performance.now() - start / 1000; // calcular el tiempo de solicitud
+        console.log(data);
+        mostrarMensaje("Actualización completa",duration.toFixed(2));
+        refrecarLotes();
+      })
+      .fail(function(xhr, status, error) {
+        mostrarMensaje(status);
+        console.log("Error al enviar la solicitud: " + status);
+        $("#btn_update").attr('disabled', false);
+        $("#spinner").hide();
+      });
 
-    });
   });
+});
 
-  function mostrarMensaje(mensaje) {
+  function mostrarMensaje(mensaje, timeA = 5) {
     // Obtener el elemento con la clase "toast-body"
     const toastBody = $('.toast-body');
+    const time = $('#timeApi');
 
     // Actualizar el contenido del elemento con el mensaje recibido como argumento
     toastBody.text(mensaje);
+    time.text("Tardo "+ timeA + " segundos");
 
     // Mostrar el elemento toast
     $('#liveToast').toast('show');

@@ -63,7 +63,8 @@
     xaxis: {
       categories: datos_grafica.map(function(dato) {
         return dato.fecha;
-      })
+      }),
+      type: 'datatime'
     }
   };
 
