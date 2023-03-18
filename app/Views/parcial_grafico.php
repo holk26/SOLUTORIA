@@ -9,17 +9,17 @@
     <div class="input-group">
       <a href="edite/<?php echo $dataI[0]['lote']; ?>"><button id="btn_update" type="button" class="btn btn-outline-success">Editar</button></a>
       <button id="btn_delete_lote" type="button" data-lote="<?php echo $dataI[0]['lote']; ?>" class="btn btn-outline-danger">Eliminar</button>
-      <span class="input-group-text">Filtro</span>
-      <input id="fromDate" type="date" aria-label="inicio" class="form-control">
-      <input id="toDate" type="date" aria-label="fin" class="form-control">
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Filtrar</button>
     </div>
   </div>
 
 </div>
 <div class="mb-3"></div>
 <h1>Gráficos <?php echo $dataI[0]['lote']; ?></h1>
+Desde: <input type="date" id="fechaDesde">
+Hasta: <input type="date" id="fechaHasta">
+<button class="" onclick="filtrarDatos()">Filtrar</button>
 <div id="miGrafica"></div>
+
 
 </main>
 </div>
@@ -32,47 +32,82 @@
 
 <script>
   var datos_grafica = <?php echo json_encode($dataI); ?>;
-  console.log(datos_grafica);
-  //Codigo de la grafica
 
-  // Creamos un objeto para guardar los datos por serie
-  var seriesData = {};
+  // Crea una función para filtrar los datos de la gráfica
+  function filtrarDatos() {
+    // Obtén las fechas desde y hasta del filtro
+    var fechaDesde = document.getElementById("fechaDesde").value;
+    var fechaHasta = document.getElementById("fechaHasta").value;
 
-  // Iteramos por cada objeto en el arreglo 'datos'
-  datos_grafica.forEach(function(dato) {
-    // Si la serie no existe, la creamos
-    if (!seriesData[dato.nombre]) {
-      seriesData[dato.nombre] = {
-        name: dato.nombre,
-        data: []
-      };
+    // Filtra los datos según las fechas seleccionadas
+    var datosFiltrados = datos_grafica.filter(function(dato) {
+      return dato.fecha >= fechaDesde && dato.fecha <= fechaHasta;
+    });
+
+    console.log(datosFiltrados);
+    // Actualiza los datos de la gráfica con los datos filtrados
+    actualizarGrafica(datosFiltrados);
+  }
+
+  // Crea una función para actualizar la gráfica con los datos filtrados
+  function actualizarGrafica(datosFiltrados) {
+    // Crea un arreglo vacío para las categorías de la gráfica
+    var categorias = [];
+
+    // Crea un objeto para almacenar los valores de cada serie
+    var valores = {};
+
+    // Recorre los datos filtrados y agrega las categorías y valores correspondientes
+    datosFiltrados.forEach(function(dato) {
+      categorias.push(dato.fecha);
+
+      if (!valores[dato.nombre]) {
+        valores[dato.nombre] = [];
+      }
+      valores[dato.nombre].push(dato.valor);
+    });
+
+    // Convierte el objeto de valores en un arreglo de series
+    var series = [];
+    for (var nombre in valores) {
+      if (valores.hasOwnProperty(nombre)) {
+        series.push({
+          name: nombre,
+          data: valores[nombre]
+        });
+      }
     }
-    // Agregamos el valor a la serie correspondiente
-    seriesData[dato.nombre].data.push(parseFloat(dato.valor));
-  });
 
-  // Convertimos el objeto de series a un arreglo
-  var series = Object.values(seriesData);
+    // Configura las opciones de la gráfica
+    var options = {
+      series: series,
+      chart: {
+        type: 'line',
+        height: 350
+      },
+      xaxis: {
+        categories: categorias,
+      },
+      yaxis: {
+        title: {
+          text: 'Valor'
+        }
+      },
+      stroke: {
+        curve: 'smooth'
+      }
+    };
 
-  // Configuramos el gráfico
-  var options = {
-    chart: {
-      type: 'line'
-    },
-    series: series,
-    xaxis: {
-      categories: datos_grafica.map(function(dato) {
-        return dato.fecha;
-      }),
-      type: 'datatime'
-    }
-  };
+    // Crea la instancia de la gráfica con los datos filtrados y las nuevas opciones
+    var chart = new ApexCharts(document.querySelector("#miGrafica"), options);
 
-  // Creamos el gráfico
-  var chart = new ApexCharts(document.querySelector("#miGrafica"), options);
+    // Renderiza la gráfica
+    chart.render();
+  }
 
-  // Renderizamos el gráfico
-  chart.render();
+  // Carga la gráfica con todos los datos al cargar la página
+  actualizarGrafica(datos_grafica);
+
 
   //Fin codigo de la grafica
   $('#btn_delete_lote').on('click', function() {
