@@ -3,21 +3,32 @@
 //$miArrayJSON = json_encode($dataI);
 //echo "<script>var dataGrafico = JSON.parse('$miArrayJSON');</script>";
 ?>
-<div class="row">
-  <div class="col-md-4 ms-auto">
 
-    <div class="input-group">
+<div class="row align-items-center text-end">
+  <div class="col-md-4 ms-auto">
+    <div>
       <a href="edite/<?php echo $dataI[0]['lote']; ?>"><button id="btn_update" type="button" class="btn btn-outline-success">Editar</button></a>
       <button id="btn_delete_lote" type="button" data-lote="<?php echo $dataI[0]['lote']; ?>" class="btn btn-outline-danger">Eliminar</button>
     </div>
   </div>
-
 </div>
 <div class="mb-3"></div>
+
+<div class="mb-3"></div>
 <h1>Gráficos <?php echo $dataI[0]['lote']; ?></h1>
-Desde: <input type="date" id="fechaDesde">
-Hasta: <input type="date" id="fechaHasta">
-<button class="" onclick="filtrarDatos()">Filtrar</button>
+<div class="d-flex align-items-center justify-content-end mt-3">
+  <div class="form-inline mr-3">
+    <input type="date" class="form-control" id="fechaDesde">
+  </div>
+  <div class="form-inline">
+    <input type="date" class="form-control" id="fechaHasta">
+  </div>
+  <div class="btn-group ml-3" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-outline-primary" onclick="filtrarDatos()">Filtrar</button>
+    <button type="button" class="btn btn-outline-primary" onclick="setFecha()">Restaura fechas</button>
+  </div>
+</div>
+<div class="mb-3"></div>
 <div id="miGrafica"></div>
 
 
@@ -32,17 +43,22 @@ Hasta: <input type="date" id="fechaHasta">
 
 <script>
   var datos_grafica = <?php echo json_encode($dataI); ?>;
+  setFecha();
 
-  // Obtén la fecha mínima y máxima de los datos
-  var fechas = datos_grafica.map(function(dato) {
-    return new Date(dato.fecha).getTime();
-  });
-  var fechaMinima = new Date(Math.min.apply(null, fechas)).toISOString().slice(0, 10);
-  var fechaMaxima = new Date(Math.max.apply(null, fechas)).toISOString().slice(0, 10);
+  function setFecha() {
+    // Obtén la fecha mínima y máxima de los datos
+    var fechas = datos_grafica.map(function(dato) {
+      return new Date(dato.fecha).getTime();
+    });
+    var fechaMinima = new Date(Math.min.apply(null, fechas)).toISOString().slice(0, 10);
+    var fechaMaxima = new Date(Math.max.apply(null, fechas)).toISOString().slice(0, 10);
 
-  // Completa automáticamente los input de fecha
-  document.getElementById("fechaDesde").value = fechaMinima;
-  document.getElementById("fechaHasta").value = fechaMaxima;
+    // Completa automáticamente los input de fecha
+    document.getElementById("fechaDesde").value = fechaMinima;
+    document.getElementById("fechaHasta").value = fechaMaxima;
+
+
+  }
 
 
   // Obtén los valores únicos de las categorías (fechas)
