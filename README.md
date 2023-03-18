@@ -18,6 +18,7 @@ ejecuta `php spark serve`
 
 `http://localhost:8080/'`
 
+![image](https://user-images.githubusercontent.com/23020718/226124641-57233dbf-93d7-485a-b8b8-2c6f7b13b41e.png)
 
 ![image](https://user-images.githubusercontent.com/23020718/226075685-a105e97d-02f8-4766-9bf3-7d733c15550a.png)
 
